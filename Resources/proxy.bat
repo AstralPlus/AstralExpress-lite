@@ -6,14 +6,13 @@ goto end
 
 :1
 @ECHO OFF
-cd %~dp0proxy
+cd %CD%\proxy
 call StarRail.HttpProxy.exe
-exit
 goto end
 
 :2
 @ECHO OFF
-cd /d %~dp0
+cd %CD%\proxy
 taskkill /f /im StarRail.HttpProxy.exe
 certutil -user -delstore root ae8fe14dc72938ad5b1ed3889dd8e2ec619a50cf
 reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable /t REG_DWORD /d 0 /f
