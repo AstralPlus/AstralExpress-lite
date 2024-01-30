@@ -1,3 +1,17 @@
+@echo off
+IF "%~1"=="1" goto 1
+IF "%~1"=="2" goto 2
+goto end
+
+
+:1
+@ECHO OFF
+cd %~dp0proxy
+call StarRail.HttpProxy.exe
+exit
+goto end
+
+:2
 @ECHO OFF
 cd /d %~dp0
 taskkill /f /im StarRail.HttpProxy.exe
@@ -6,3 +20,8 @@ reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v Pr
 reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyServer /d "" /f
 cls
 exit
+goto end
+
+
+
+:end

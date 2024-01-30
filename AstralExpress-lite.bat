@@ -13,13 +13,13 @@ echo ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 set /p op=Select: 
 if "%op%"=="1" goto start
 if "%op%"=="2" goto build
-if "%op%"=="3" start /min cmd /k "cd "%CD%\AstralPackage" && stopProxy.bat" && exit
+if "%op%"=="3" start /min cmd /k "cd "%CD%\AstralPackage" && proxy.bat 2" && exit
 
 cls
 goto menu
 
 :start
-start /min cmd /k "cd "%CD%\AstralPackage" && startProxy.bat"
+start /min cmd /k "cd "%CD%\AstralPackage" && proxy.bat 1"
 start cmd /k "cd "%CD%\AstralPackage" && java -jar LunarCore.jar"
 cls
 goto menu
