@@ -2,7 +2,6 @@
 setlocal enabledelayedexpansion
 
 :menu
-:: Check if config file exists and load game path
 if exist gamepath.txt (
     set /p gamepath=<gamepath.txt
     set "option1=Toggle launch game with server (Currently ON)"
@@ -10,20 +9,15 @@ if exist gamepath.txt (
     set gamepath=
     set "option1=Toggle launch game with server (Currently OFF)"
 )
-
-:: Remove quotes from option1
 for /f "delims=" %%A in ("%option1%") do set option1=%%~A
 
-echo Welcome to Astral Express 1.0
-echo ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+echo Astral Express Lite 1.1  ^|  AstralPlus by Midrooms, LunarCore by Melledy
+echo ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 echo 1^) Start server
 echo 2^) Build/repair server
 echo 3^) %option1%
 echo 4^) Stop proxy ^& exit
-echo ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-echo AstralPlus by Midrooms
-echo LunarCore by Melledy
-echo ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+echo ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 set /p op=Select: 
 if "%op%"=="1" goto start
