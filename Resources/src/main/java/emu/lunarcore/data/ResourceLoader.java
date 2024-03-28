@@ -1,6 +1,7 @@
 package emu.lunarcore.data;
 
 import java.io.*;
+import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -21,6 +22,7 @@ import emu.lunarcore.data.ResourceDeserializers.LunarCoreDoubleDeserializer;
 import emu.lunarcore.data.ResourceDeserializers.LunarCoreHashDeserializer;
 import emu.lunarcore.data.config.FloorInfo.FloorGroupSimpleInfo;
 import emu.lunarcore.data.custom.ActivityScheduleData;
+import emu.lunarcore.util.Utils;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 
 public class ResourceLoader {
@@ -37,6 +39,8 @@ public class ResourceLoader {
         // Make sure we don't load more than once
         if (loaded) return;
 
+        // Create data folder if it doesnt exist when starting the server
+        checkDataFolder();
         // Start loading resources
         loadResources();
         // Load floor infos after resources
@@ -53,6 +57,30 @@ public class ResourceLoader {
         // Done
         loaded = true;
         LunarCore.getLogger().info("Resource loading complete");
+    }
+    
+    private static void checkDataFolder() {
+        File dir = new File(LunarCore.getConfig().getDataDir());
+        if (!dir.exists()) {
+            dir.mkdir();
+        }
+    }
+    
+    private static Int2ObjectMap<?> getMapForExcel(Class<?> dataClass, Class<?> resourceDefinition) {
+        Int2ObjectMap<?> map = null;
+
+        try {
+            Field field = dataClass.getDeclaredField(Utils.lowerCaseFirstChar(resourceDefinition.getSimpleName()) + "Map");
+            field.setAccessible(true);
+
+            map = (Int2ObjectMap<?>) field.get(null);
+
+            field.setAccessible(false);
+        } catch (Exception e) {
+
+        }
+
+        return map;
     }
 
     private static List<Class<?>> getResourceDefClasses() {
@@ -81,7 +109,7 @@ public class ResourceLoader {
             }
 
             @SuppressWarnings("rawtypes")
-            Int2ObjectMap map = GameData.getMapForExcel(resourceDefinition);
+            Int2ObjectMap map = ResourceLoader.getMapForExcel(type.gameDataClass(), resourceDefinition);
 
             try {
                 loadFromResource(resourceDefinition, type, map);
